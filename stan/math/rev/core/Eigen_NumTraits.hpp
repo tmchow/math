@@ -59,7 +59,7 @@ struct NumTraits<stan::math::var> : GenericNumTraits<stan::math::var> {
     /**
      * stan::math::var does not require initialization.
      */
-    RequireInitialization = 0,
+    RequireInitialization = 1,
 
     /**
      * Twice the cost of copying a double.
