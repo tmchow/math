@@ -142,11 +142,14 @@ template <typename T_bool, typename T_true, typename T_false,
           require_all_stan_scalar_t<T_true, T_false>* = nullptr>
 inline auto select(T_bool&& c, const T_true& y_true, const T_false& y_false) {
   using ret_t = return_type_t<T_true, T_false>;
-  return make_holder([y_true, y_false](auto&& c_) {
-      return std::forward<decltype(c_)>(c_).unaryExpr([y_true, y_false](bool cond) {
-        return cond ? ret_t(y_true) : ret_t(y_false);
-      });
-  }, std::forward<T_bool>(c));
+  return make_holder(
+      [y_true, y_false](auto&& c_) {
+        return std::forward<decltype(c_)>(c_).unaryExpr(
+            [y_true, y_false](bool cond) {
+              return cond ? ret_t(y_true) : ret_t(y_false);
+            });
+      },
+      std::forward<T_bool>(c));
 }
 
 /**
@@ -169,17 +172,25 @@ inline auto select(T_bool&& c, T_true&& y_true, T_false&& y_false) {
                          "right hand side", y_false);
   using ret_t = return_type_t<T_true, T_false>;
   if constexpr (!std::is_same_v<std::decay_t<T_true>, std::decay_t<T_false>>) {
-    return make_holder([](auto&& c_, auto&& y_true_, auto&& y_false_) {
-      return std::forward<decltype(c_)>(c_).select(
-          std::forward<decltype(y_true_)>(y_true_),
-          std::forward<decltype(y_false_)>(y_false_));
-    }, std::forward<T_bool>(c), std::forward<T_true>(y_true), std::forward<T_false>(y_false));
+    return make_holder(
+        [](auto&& c_, auto&& y_true_, auto&& y_false_) {
+          return std::forward<decltype(c_)>(c_).select(
+              std::forward<decltype(y_true_)>(y_true_),
+              std::forward<decltype(y_false_)>(y_false_));
+        },
+        std::forward<T_bool>(c), std::forward<T_true>(y_true),
+        std::forward<T_false>(y_false));
   } else {
-    return make_holder([](auto&& c_, auto&& y_true_, auto&& y_false_) {
-      return std::forward<decltype(c_)>(c_).select(std::forward<decltype(y_true_)>(y_true_),
-                                    std::forward<decltype(y_false_)>(y_false_)).template cast<ret_t>();
-    }, std::forward<T_bool>(c), std::forward<T_true>(y_true), std::forward<T_false>(y_false));
-}
+    return make_holder(
+        [](auto&& c_, auto&& y_true_, auto&& y_false_) {
+          return std::forward<decltype(c_)>(c_)
+              .select(std::forward<decltype(y_true_)>(y_true_),
+                      std::forward<decltype(y_false_)>(y_false_))
+              .template cast<ret_t>();
+        },
+        std::forward<T_bool>(c), std::forward<T_true>(y_true),
+        std::forward<T_false>(y_false));
+  }
 }
 }  // namespace math
 }  // namespace stan

@@ -61,31 +61,34 @@ inline return_type_t<T_location, T_precision> neg_binomial_2_lpmf(
   auto mu_plus_phi = mu_val + phi_val;
   auto log_mu_plus_phi = log(mu_plus_phi);
   auto n_plus_phi = value_of(n_vec) + phi_val;
-  constexpr bool include_precision = include_summand<propto, T_precision>::value;
+  constexpr bool include_precision
+      = include_summand<propto, T_precision>::value;
   constexpr bool include_location = include_summand<propto, T_location>::value;
   auto logp_calc = [&]() {
     return -phi_val * (log1p(mu_val / phi_val))
-          - value_of(n_vec) * log_mu_plus_phi;
+           - value_of(n_vec) * log_mu_plus_phi;
   };
   if constexpr (include_precision || include_location) {
     if constexpr (include_precision && include_location) {
-      logp += sum(binomial_coefficient_log(n_plus_phi - 1, n_vec) + multiply_log(n_vec, mu_val) + logp_calc());
+      logp += sum(binomial_coefficient_log(n_plus_phi - 1, n_vec)
+                  + multiply_log(n_vec, mu_val) + logp_calc());
     } else if constexpr (include_precision) {
-      logp += sum(binomial_coefficient_log(n_plus_phi - 1, n_vec) + logp_calc());
+      logp
+          += sum(binomial_coefficient_log(n_plus_phi - 1, n_vec) + logp_calc());
     } else if constexpr (include_location) {
       logp += sum(multiply_log(n_vec, mu_val) + logp_calc());
     }
   }
   if constexpr (is_autodiff_v<T_location>) {
-    partials<0>(ops_partials) = n_vec / mu_val - (n_vec + phi_val) / mu_plus_phi;
+    partials<0>(ops_partials)
+        = n_vec / mu_val - (n_vec + phi_val) / mu_plus_phi;
   }
   if constexpr (is_autodiff_v<T_precision>) {
-    auto log_term
-        = select(mu_val < phi_val, log1p(-mu_val / mu_plus_phi),
-                 log_phi - log_mu_plus_phi);
+    auto log_term = select(mu_val < phi_val, log1p(-mu_val / mu_plus_phi),
+                           log_phi - log_mu_plus_phi);
     partials<1>(ops_partials) = (mu_val - value_of(n_vec)) / mu_plus_phi
-                                    + log_term - digamma(phi_val)
-                                    + digamma(n_plus_phi);
+                                + log_term - digamma(phi_val)
+                                + digamma(n_plus_phi);
   }
   return ops_partials.build(logp);
 }
