@@ -52,9 +52,9 @@ inline return_type_t<T_location, T_precision> neg_binomial_2_lpmf(
   T_partials_return logp(0.0);
   auto ops_partials = make_partials_propagator(mu_ref, phi_ref);
 
-  auto n_vec = as_array_or_scalar(n_ref);
-  auto mu_vec = as_array_or_scalar(mu_ref);
-  auto phi_vec = as_array_or_scalar(phi_ref);
+  auto n_vec = as_array_or_scalar(as_column_vector_or_scalar(n_ref));
+  auto mu_vec = as_array_or_scalar(as_column_vector_or_scalar(mu_ref));
+  auto phi_vec = as_array_or_scalar(as_column_vector_or_scalar(phi_ref));
   decltype(auto) mu_val = value_of(mu_vec);
   decltype(auto) phi_val = value_of(phi_vec);
   auto log_phi = log(phi_val);
