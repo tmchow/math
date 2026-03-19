@@ -66,7 +66,7 @@ corr_matrix_constrain(T&& x, Eigen::Index k) {
  * @tparam T type of the vector (must be derived from \c Eigen::MatrixBase and
  * have one compile-time dimension equal to 1)
  * @tparam Lp A scalar type for the lp argument. The scalar type of T should be
- * convertable to this.
+ * convertible to this.
  * @param x Vector of unconstrained partial correlations.
  * @param k Dimensionality of returned correlation matrix.
  * @param lp Log probability reference to increment.
@@ -115,7 +115,7 @@ inline auto corr_matrix_constrain(T&& y, int K) {
  * `Eigen::DenseBase` or a `var_value` with inner type inheriting from
  * `Eigen::DenseBase` with compile time dynamic rows and 1 column
  * @tparam Lp Scalar type for the lp argument. The scalar type of T should be
- * convertable to this.
+ * convertible to this.
  * @param y Vector of unconstrained partial correlations
  * @param K Dimensionality of returned correlation matrix
  * @param[in, out] lp log density accumulator o
@@ -144,7 +144,7 @@ inline auto corr_matrix_constrain(T&& y, int K, Lp& lp) {
  *  inner type inheriting from `Eigen::DenseBase` with compile time dynamic rows
  *  and 1 column or standard vector thereof
  * @tparam Lp A scalar type for the lp argument. The scalar type of T should be
- * convertable to this.
+ * convertible to this.
  * @param x Vector of unconstrained partial correlations
  * @param k Dimensionality of returned correlation matrix
  * @param[in,out] lp log density accumulator
