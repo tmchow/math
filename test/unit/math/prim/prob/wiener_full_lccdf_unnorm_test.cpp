@@ -309,4 +309,3 @@ TEST(mathPrimScalProbWienerFullLccdfPrecScal, invalid_st0) {
   EXPECT_THROW(wiener_lccdf_unnorm(rt, a, t0, w, v, sv, sw, NAN, 1e-4),
                std::domain_error);
 }
-

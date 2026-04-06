@@ -296,7 +296,7 @@ inline auto wiener_lcdf_unnorm(const T_y& y, const T_a& a, const T_t0& t0,
   auto st0_val = to_ref(as_value_column_array_or_scalar(st0_ref));
 
   if constexpr (!include_summand<propto, T_y, T_a, T_v, T_w, T_t0, T_sv, T_sw,
-                       T_st0>::value) {
+                                 T_st0>::value) {
     return ret_t(0);
   }
 
@@ -446,7 +446,8 @@ inline auto wiener_lcdf_unnorm(const T_y& y, const T_a& a, const T_t0& t0,
     // computation of derivative for t and precision check in order to give
     // the value as deriv_t to edge1 and as -deriv_t to edge5
 
-    if constexpr (!is_constant_all<T_y>::value || !is_constant_all<T_t0>::value) {
+    if constexpr (!is_constant_all<T_y>::value
+                  || !is_constant_all<T_t0>::value) {
       T_partials_return deriv_t_7
           = internal::wiener7_integrate_cdf<
                 GradientCalc::OFF, GradientCalc::OFF, GradientCalc::OFF,

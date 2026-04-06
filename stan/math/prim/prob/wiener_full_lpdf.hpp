@@ -353,7 +353,7 @@ inline auto wiener_lpdf(const T_y& y, const T_a& a, const T_t0& t0,
   auto st0_val = to_ref(as_value_column_array_or_scalar(st0_ref));
 
   if constexpr (!include_summand<propto, T_y, T_a, T_v, T_w, T_t0, T_sv, T_sw,
-                       T_st0>::value) {
+                                 T_st0>::value) {
     return ret_t(0);
   }
 

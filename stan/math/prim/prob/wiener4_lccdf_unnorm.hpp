@@ -324,7 +324,8 @@ inline auto wiener_lccdf_unnorm(const T_y& y, const T_a& a, const T_t0& t0,
     const auto new_est_err
         = log_ccdf_single_value + log_error_derivative - LOG_FOUR;
 
-    if constexpr (!is_constant_all<T_y>::value || !is_constant_all<T_t0>::value) {
+    if constexpr (!is_constant_all<T_y>::value
+                  || !is_constant_all<T_t0>::value) {
       const auto deriv_y = internal::estimate_with_err_check<5, 0>(
           [](auto&&... args) {
             return internal::wiener5_density<GradientCalc::ON>(args...);
