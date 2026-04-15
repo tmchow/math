@@ -49,7 +49,7 @@ inline return_type_t<T_prob> bernoulli_lcdf(const T_n& n, const T_prob& theta) {
     return ops_partials.build(NEGATIVE_INFTY);
   }
 
-  const auto& log1m_theta = select(theta_arr == 1, 0.0, log1m(theta_arr));
+  const auto log1m_theta = select(theta_arr == 1, 0.0, log1m(theta_arr));
 
   if constexpr (is_autodiff_v<T_prob>) {
     partials<0>(ops_partials) = select(n_arr == 0, -exp(-log1m_theta), 0.0);
