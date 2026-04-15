@@ -3,7 +3,7 @@
 
 #include <stan/math/mix/functor/hessian_block_diag.hpp>
 #include <stan/math/mix/functor/conditional_copy_and_promote.hpp>
-#include <stan/math/prim/functor/apply.hpp>
+#include <stan/math/prim/functor.hpp>
 #include <stan/math/prim/fun.hpp>
 
 namespace stan {
